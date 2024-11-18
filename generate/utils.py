@@ -1,12 +1,10 @@
 import os
 import requests
 import json
-from dotenv import load_dotenv
 
-load_dotenv()
 
-ollama_address = os.getenv("OLLAMA_ADDRESS")
-ollama_port = os.getenv("OLLAMA_PORT")
+ollama_address = os.getenv("OLLAMA_ADDRESS", "localhost")
+ollama_port = os.getenv("OLLAMA_PORT", "11434")
 
 
 def generate(query, docs, sources, distance, model, temperature):
