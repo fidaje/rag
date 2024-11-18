@@ -1,6 +1,6 @@
 from fastapi import APIRouter, File, UploadFile, HTTPException
 from fastapi.responses import JSONResponse
-from populate.utils import add_document, delete_document, list_documents
+from utils import add_document, delete_document, list_documents
 
 
 router = APIRouter(prefix="/populate", tags=["populate"])
