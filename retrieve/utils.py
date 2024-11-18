@@ -2,16 +2,14 @@ import chromadb
 import os
 import requests
 import json
-from dotenv import load_dotenv
 
-load_dotenv()
 
-chroma_address = os.getenv("CHROMA_ADDRESS")
-chroma_port = int(os.getenv("CHROMA_PORT"))
-chroma_collection_name = os.getenv("CHROMA_DB")
-embedding_model = os.getenv("EMBEDDING_MODEL")
-ollama_address = os.getenv("OLLAMA_ADDRESS")
-ollama_port = os.getenv("OLLAMA_PORT")
+chroma_address = os.getenv("CHROMA_ADDRESS", "localhost")
+chroma_port = int(os.getenv("CHROMA_PORT", "8000"))
+chroma_collection_name = os.getenv("CHROMA_DB", "wir")
+embedding_model = os.getenv("EMBEDDING_MODEL", "nomic-embed-text")
+ollama_address = os.getenv("OLLAMA_ADDRESS", "localhost")
+ollama_port = os.getenv("OLLAMA_PORT", "11434")
 
 
 def _get_embedding(query):
