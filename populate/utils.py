@@ -4,16 +4,14 @@ import json
 import os
 import re
 import requests
-from dotenv import load_dotenv
 
-load_dotenv()
 
-chroma_address = os.getenv("CHROMA_ADDRESS")
-chroma_port = int(os.getenv("CHROMA_PORT"))
-chroma_collection_name = os.getenv("CHROMA_DB")
-embedding_model = os.getenv("EMBEDDING_MODEL")
-ollama_address = os.getenv("OLLAMA_ADDRESS")
-ollama_port = os.getenv("OLLAMA_PORT")
+chroma_address = os.getenv("CHROMA_ADDRESS", "localhost")
+chroma_port = int(os.getenv("CHROMA_PORT", "8000"))
+chroma_collection_name = os.getenv("CHROMA_DB", "wir")
+embedding_model = os.getenv("EMBEDDING_MODEL", "nomic-embed-text")
+ollama_address = os.getenv("OLLAMA_ADDRESS", "localhost")
+ollama_port = os.getenv("OLLAMA_PORT", "11434")
 
 
 def _tokenize(text):
@@ -90,7 +88,7 @@ def delete_document(document_name):
 
 
 def add_document(document):
-    print("Adding document...")
+    print(f"Adding document {document.filename}...")
     if not document.filename.endswith(".pdf"):
         raise ValueError("Uploaded file is not PDF.")
 
@@ -98,13 +96,11 @@ def add_document(document):
     if not add_to_dir[0]:
         return False
     _add_to_db(add_to_dir[1])
-
     return True
 
 
 def _add_to_dir(document):
     path = "populate/data"
-
     os.makedirs(path, exist_ok=True)
 
     file_path = os.path.join(path, document.filename)
@@ -116,13 +112,12 @@ def _add_to_dir(document):
         f.write(document.file.read())
 
     document.file.seek(0)
-
     return True, file_path
 
 
 def _add_to_db(file_path):
     chroma_client = chromadb.HttpClient(host=chroma_address, port=chroma_port)
-    collection = chroma_client.get_collection(name=f"{chroma_collection_name}")
+    collection = chroma_client.get_or_create_collection(name=f"{chroma_collection_name}")
     text = _extract_text_from_pdf(file_path)
     tokens = _tokenize(text)
     chunks = _chunk_splitter(tokens)
