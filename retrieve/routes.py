@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
-from retrieve.utils import retrieve
+from utils import retrieve
 
 
 class Query(BaseModel):
