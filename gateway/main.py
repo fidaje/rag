@@ -6,14 +6,12 @@ import httpx
 
 from fastapi import FastAPI, HTTPException, File, UploadFile
 from fastapi.responses import JSONResponse
-from dotenv import load_dotenv
 from pydantic import BaseModel
 
 
-load_dotenv()
-url_populate = os.getenv("URL_POPULATE")
-url_retrieve = os.getenv("URL_RETRIEVE")
-url_generate = os.getenv("URL_GENERATE")
+url_populate = os.getenv("URL_POPULATE", "http://127.0.0.1:8001/populate")
+url_retrieve = os.getenv("URL_RETRIEVE", "http://127.0.0.1:8002/retrieve")
+url_generate = os.getenv("URL_GENERATE", "http://127.0.0.1:8003/generate")
 
 
 class Query(BaseModel):
@@ -96,7 +94,6 @@ def upload_document(file: UploadFile = File(...)):
                 status_code=400,
                 content={"message": "Error in retrieving list of documents"}
             )
-
         return JSONResponse(
             status_code=200,
             content=response.json()
