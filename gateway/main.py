@@ -1,4 +1,6 @@
 import os
+from typing import List
+
 import requests
 import httpx
 
@@ -6,13 +8,26 @@ from fastapi import FastAPI, HTTPException, File, UploadFile
 from fastapi.responses import JSONResponse
 from dotenv import load_dotenv
 from pydantic import BaseModel
-from retrieve.routes import Query
-from generate.routes import Prompt
+
 
 load_dotenv()
 url_populate = os.getenv("URL_POPULATE")
 url_retrieve = os.getenv("URL_RETRIEVE")
 url_generate = os.getenv("URL_GENERATE")
+
+
+class Query(BaseModel):
+    query: str
+    n_results: int | None = 3
+
+
+class Prompt(BaseModel):
+    prompt: str
+    documents: str
+    sources: str
+    distance: List[float]
+    model: str | None = "gemma2:2b"
+    temperature: float | None = 0.4
 
 
 class MakeRequest(BaseModel):
