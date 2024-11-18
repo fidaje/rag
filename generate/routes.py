@@ -2,7 +2,7 @@ from typing import List
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
-from generate.utils import generate
+from utils import generate
 
 
 class Prompt(BaseModel):
