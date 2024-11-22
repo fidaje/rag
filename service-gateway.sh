@@ -3,6 +3,7 @@ kubectl delete deployment generate
 kubectl delete deployment populate
 kubectl delete deployment retrieve
 kubectl delete deployment gateway
-./build.sh
-sleep 10
+./build-images.sh
+./kube.sh
+sleep 15
 minikube service gateway --url
